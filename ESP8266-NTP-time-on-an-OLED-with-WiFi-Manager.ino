@@ -14,7 +14,7 @@ String   clock_version = "12.0";
 #include <WiFiManager.h>  //https://github.com/tzapu/WiFiManager
 
 #include <Adafruit_GFX.h>
-#include <Adafruit_SSD1306.h> // Only the version via the WeMos site
+#include "Adafruit_SSD1306.h" // Only the version via the WeMos site
 #define  OLED_RESET 0         // GPIO0
 Adafruit_SSD1306 display(OLED_RESET);
 
@@ -126,7 +126,7 @@ void setup(){
 }
 
 void loop() {
-  if (millis()%300000==0) {
+  if (millis()%900000==0) {
     timeClient.update();                 // NTP updates are allowed no-more than every 60-seconds and the 'display_time' function independently updates the seconds
     epoch   = timeClient.getEpochTime(); // You can test moving time forward or back by adding or subtracting the required number of seconds 1-day = 24*60*60
     epoch =  epoch + 3600 * TimeZone;
@@ -208,7 +208,7 @@ void display_time(){ // Note Ticker called routines cannot get a time update usi
   display.setCursor((64 - day_of_week[dayOfWeek].length()*6)/2,0); // Display size is 10 characters per line and 6 rows when set to size=1 when font size is 6x6 pixels
   display.println(day_of_week[dayOfWeek]); // Extract and print day of week
   display.setCursor(4,8); // centre date display
-  display.print((current_day<10?"0":"")+String(current_day)+"-"+month_of_year[current_month]+"-"+String(current_year).substring(2)); // print Day-Month-Year
+  display.print(month_of_year[current_month]+"-"+(current_day<10?"0":"")+String(current_day)+"-"+String(current_year).substring(2)); // print Day-Month-Year
   display.setTextSize(2);  // Increase text size for time display
   display.setCursor(2,17); // Move dayOfWeekn a litle and remember location is in pixels not lines!
   if (AMPM) {
